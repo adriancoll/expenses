@@ -1,9 +1,13 @@
+// ui
+import { DeleteExpenseAlertDialog } from '@/components/expenses/delete-expense-alert-dialog'
 import { Button } from '@/components/ui/button'
 import { EmptyView } from '@/components/ui/empty'
-import { Separator } from '@/components/ui/separator'
+import { ArrowLeftIcon, ChevronLeftIcon } from 'lucide-react'
 // use-case
 import { getExpenseByIdUseCase } from '@/use-cases/expenses/get-expense-by-id.use-case'
+// router
 import { createFileRoute, Link } from '@tanstack/react-router'
+import { formatCurrency } from '@/utils/format-currentcy'
 
 export const Route = createFileRoute('/expenses/$expenseId')({
   component: ExpenseDetailPage,
@@ -13,11 +17,16 @@ export const Route = createFileRoute('/expenses/$expenseId')({
   errorComponent: ({ error }) => {
     return (
       <div className='h-screen'>
-        <EmptyView
-          title='Expense cannot be loaded'
-          description={error.message}
-        />
-        <Button onClick={() => window.location.reload()}>Reload</Button>
+        <EmptyView title='Expense cannot be loaded' description={error.message}>
+          <div className='flex items-center gap-4 mt-4'>
+            <Button variant='outline' asChild size='icon'>
+              <Link to='/expenses'>
+                <ChevronLeftIcon className='size-4' />
+              </Link>
+            </Button>
+            <Button onClick={() => window.location.reload()}>Reload</Button>
+          </div>
+        </EmptyView>
       </div>
     )
   },
@@ -27,26 +36,29 @@ function ExpenseDetailPage() {
   const expense = Route.useLoaderData()
 
   return (
-    <div className='space-y-4'>
-      <div className='flex items-center gap-4'>
-        <Button variant='outline' size='icon'>
+    <div className='py-4'>
+      <div className='flex items-center justify-between mb-6'>
+        <Button asChild variant='ghost'>
           <Link to='/expenses'>
-            <ChevronLeftIcon className='size-4' />
+            <ArrowLeftIcon className='size-4 mr-2' />
+            Back
           </Link>
         </Button>
-
-        <h1 className='text-2xl font-bold'>Expense Detail </h1>
+        <DeleteExpenseAlertDialog expense={expense} />
       </div>
-
-      <Separator />
-
-      <div className='space-y-4'>
-        <div className='space-y-2'>
-          {Object.entries(expense).map(([key, value]) => (
-            <div key={key}>
-              <strong className='capitalize'>{key}</strong>: {value}
-            </div>
-          ))}
+      <div className='bg-card h-full rounded-lg shadow-sm'>
+        <div className='flex items-center justify-between mb-4'>
+          <div className='text-2xl font-bold'>Expense #{expense.id}</div>
+          <div className='text-4xl font-bold text-primary'>
+            {formatCurrency(expense.amount)}
+          </div>
+        </div>
+        <div className='mb-4'>
+          <h2 className='text-lg font-medium mb-2'>{expense.title}</h2>
+          <p className='text-muted-foreground'>{expense.description}</p>
+        </div>
+        <div className='flex items-center justify-between'>
+          <div className='text-sm text-muted-foreground'></div>
         </div>
       </div>
     </div>

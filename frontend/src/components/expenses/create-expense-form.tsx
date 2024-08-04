@@ -40,19 +40,35 @@ export const CreateExpenseForm: FC = () => {
   })
 
   // 2. Define a submit handler.
-  function onSubmit(values: CreateExpense) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
-    toast.promise(createExpenseUseCase(values), {
-      loading: 'Creating expense...',
-      success: 'Expense created successfully',
-      error: 'Failed to create expense',
+  async function onSubmit(values: CreateExpense) {
+    const toastId = toast.loading('Creating expense...')
 
-      finally: () => {
-        navigate({ to: '/expenses' })
-        queryClient.invalidateQueries({
-          queryKey: ['get-expenses'],
-        })
+    const expenseCreated = await createExpenseUseCase(values)
+
+    queryClient.invalidateQueries({
+      queryKey: ['get-expenses', 'get-total-spent'],
+    })
+
+    if (!expenseCreated) {
+      return toast.error('Failed to create expense', { id: toastId })
+    }
+
+    navigate({
+      to: `/expenses`,
+    })
+
+    toast.success('Created successfully', {
+      id: toastId,
+      action: {
+        label: 'View expense',
+        onClick: () => {
+          navigate({
+            to: `/expenses/$expenseId`,
+            params: {
+              expenseId: String(expenseCreated.id),
+            },
+          })
+        },
       },
     })
   }

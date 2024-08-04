@@ -11,7 +11,11 @@ export const getExpenseByIdUseCase = async (
   })
 
   if (!res.ok) {
-    throw new Error('Server error')
+    if (res.status === 404) {
+      throw new Error(`Expense with id #${expenseId} not found`)
+    }
+
+    throw new Error(res.statusText)
   }
 
   const data = await res.json()

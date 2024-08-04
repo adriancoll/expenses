@@ -10,6 +10,10 @@ export const Route = createFileRoute('/expenses/')({
 function ExpensesPage() {
   return (
     <div className='p-2'>
+      <div className='mb-4'>
+        <h1 className='font-bold text-2xl leading-tight'>Expenses</h1>
+        <p className='font-sm'>Here you can see all the expenses</p>
+      </div>
       <ExpensesTable />
     </div>
   )

@@ -1,10 +1,18 @@
 // api
 import { expensesApi } from '@/services/api'
 // schema
-import { CreateExpense } from '@server/schemas/expense.schema'
+import { CreateExpense, Expense } from '@server/schemas/expense.schema'
 
-export const createExpenseUseCase = (expense: CreateExpense) => {
-  const response = expensesApi.$post({ json: expense })
+export const createExpenseUseCase = async (
+  expense: CreateExpense
+): Promise<Expense> => {
+  const response = await expensesApi.$post({ json: expense })
 
-  return response
+  if (!response.ok) {
+    throw new Error('Failed to create expense')
+  }
+
+  const data = await response.json()
+
+  return data
 }

@@ -1,9 +1,18 @@
 import { Button } from '@/components/ui/button'
-import { createRootRoute, Link, Outlet } from '@tanstack/react-router'
+import { QueryClient } from '@tanstack/react-query'
+import {
+  createRootRouteWithContext,
+  Link,
+  Outlet,
+} from '@tanstack/react-router'
 import { TanStackRouterDevtools } from '@tanstack/router-devtools'
 import { PlusIcon } from 'lucide-react'
 
-export const Route = createRootRoute({
+export interface RouterContext {
+  queryClient: QueryClient
+}
+
+export const Route = createRootRouteWithContext<RouterContext>()({
   component: Root,
 })
 
@@ -17,6 +26,11 @@ function NavBar() {
         to='/expenses'
         className='[&.active]:font-semibold [&.active]:underline'>
         Expenses
+      </Link>
+      <Link
+        to='/profile'
+        className='[&.active]:font-semibold [&.active]:underline'>
+        Profile
       </Link>
       <Link
         to='/about'
@@ -35,13 +49,13 @@ function NavBar() {
 
 function Root() {
   return (
-    <>
+    <div className='h-full'>
       <NavBar />
       <hr />
-      <div className='container my-4'>
+      <div className='container h-full mt-8'>
         <Outlet />
       </div>
       <TanStackRouterDevtools />
-    </>
+    </div>
   )
 }

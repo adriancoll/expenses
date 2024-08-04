@@ -4,8 +4,9 @@ import { zValidator } from '@hono/zod-validator'
 // data
 import { fakeExpenses } from '../data/expenses'
 // schemas
-import { createExpenseSchema } from '../schemas/expense.schema'
+import { createExpenseSchema, expenseSchema } from '../schemas/expense.schema'
 import { wait } from '../../frontend/src/utils/wait'
+import { getUser } from '../kinde'
 
 export const expensesRouter = new Hono()
   .get('/', (c) => c.json(fakeExpenses))
@@ -20,12 +21,14 @@ export const expensesRouter = new Hono()
   .post('/', zValidator('json', createExpenseSchema), async (c) => {
     const validated = c.req.valid('json')
 
-    fakeExpenses.push({
+    const existingExpense = expenseSchema.parse({
       id: fakeExpenses.length + 1,
       ...validated,
     })
 
-    return c.json(validated)
+    fakeExpenses.push(existingExpense)
+
+    return c.json(existingExpense)
   })
   .get('/:id{[0-9]+}', (c) => {
     const id = Number.parseInt(c.req.param('id'))
