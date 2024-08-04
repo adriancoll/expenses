@@ -18,7 +18,7 @@ function App() {
   return (
     <Card className='m-auto max-w-[350px]'>
       <CardHeader>
-        <CardTitle>The spent</CardTitle>
+        <CardTitle>The spent yau?</CardTitle>
         <CardDescription>The total amount you've spent</CardDescription>
       </CardHeader>
       <CardContent>{totalSpent}</CardContent>
