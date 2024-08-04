@@ -4,17 +4,18 @@ import { zValidator } from '@hono/zod-validator'
 // data
 import { fakeExpenses } from '../data/expenses'
 // schemas
-import { createExpenseSchema } from '../../schemas/expense.schema'
+import { createExpenseSchema } from '../schemas/expense.schema'
+import { wait } from '../../frontend/src/utils/wait'
 
 export const expensesRouter = new Hono()
   .get('/', (c) => c.json(fakeExpenses))
-  .get('/total-spent', (c) => {
-    const totalSpent = fakeExpenses.reduce(
+  .get('/total', async (c) => {
+    await wait(1000)
+    const total: number = fakeExpenses.reduce(
       (acc, expense) => acc + expense.amount,
       0
     )
-
-    return c.json({ totalSpent })
+    return c.json({ total }, 201)
   })
   .post('/', zValidator('json', createExpenseSchema), async (c) => {
     const validated = c.req.valid('json')
