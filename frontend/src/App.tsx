@@ -12,7 +12,7 @@ function App() {
   const [totalSpent, setTotalSpent] = useState(0)
 
   useEffect(() => {
-    getTotalSpent().then(setTotalSpent) 
+    getTotalSpent().then(setTotalSpent)
   }, [])
 
   return (
