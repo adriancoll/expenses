@@ -4,6 +4,7 @@ import { createFileRoute } from '@tanstack/react-router'
 import { useGetCurrentUserQuery } from '@/hooks/auth/use-get-current-user-query'
 // ui
 import { Loader } from 'lucide-react'
+import { LogoutButton } from '@/components/auth/logout-button'
 
 export const Route = createFileRoute('/_authenticated/profile')({
   component: Profile,
@@ -21,8 +22,10 @@ function Profile() {
   }
 
   return (
-    <div className='p-2'>
+    <div className='p-2 space-y-4'>
       <h1>Hello, {profile.family_name}</h1>
+
+      <LogoutButton />
     </div>
   )
 }

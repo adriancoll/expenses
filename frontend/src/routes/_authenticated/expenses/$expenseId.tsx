@@ -9,7 +9,7 @@ import { getExpenseByIdUseCase } from '@/use-cases/expenses/get-expense-by-id.us
 import { createFileRoute, Link } from '@tanstack/react-router'
 import { formatCurrency } from '@/utils/format-currentcy'
 
-export const Route = createFileRoute('/expenses/$expenseId')({
+export const Route = createFileRoute('/_authenticated/expenses/$expenseId')({
   component: ExpenseDetailPage,
   loader: async ({ params }) => {
     return getExpenseByIdUseCase(params.expenseId)

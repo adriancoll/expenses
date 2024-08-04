@@ -3,7 +3,7 @@ import { createFileRoute } from '@tanstack/react-router'
 // ui
 import { ExpensesTable } from '@/components/expenses/expenses-table'
 
-export const Route = createFileRoute('/expenses/')({
+export const Route = createFileRoute('/_authenticated/expenses/')({
   component: ExpensesPage,
 })
 

@@ -1,4 +1,6 @@
+import { LogoutButton } from '@/components/auth/logout-button'
 import { Button } from '@/components/ui/button'
+import { useIsAuthenticated } from '@/hooks/auth/use-is-authenticated'
 import { QueryClient } from '@tanstack/react-query'
 import {
   createRootRouteWithContext,
@@ -17,6 +19,8 @@ export const Route = createRootRouteWithContext<RouterContext>()({
 })
 
 function NavBar() {
+  const isAuth = useIsAuthenticated()
+
   return (
     <div className='p-2 flex gap-2 w-auto items-center justify-start'>
       <Link to='/' className='[&.active]:font-semibold [&.active]:underline'>
@@ -37,12 +41,15 @@ function NavBar() {
         className='[&.active]:font-semibold [&.active]:underline'>
         About
       </Link>
-      <Button asChild className='ml-auto'>
-        <Link to='/create-expense' className='[&.active]:font-semibold'>
-          <PlusIcon className='size-4 mr-2' />
-          Create expense
-        </Link>
-      </Button>
+      <div className='ml-auto space-x-4'>
+        <Button variant='secondary' asChild>
+          <Link to='/create-expense' className='[&.active]:font-semibold'>
+            <PlusIcon className='size-4 mr-2' />
+            Create expense
+          </Link>
+        </Button>
+        {isAuth ? <LogoutButton size='icon' /> : null}
+      </div>
     </div>
   )
 }

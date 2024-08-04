@@ -116,7 +116,6 @@ export const CreateExpenseForm: FC = () => {
                 <Input
                   type='number'
                   min={0}
-                  defaultValue={0}
                   onChange={(ev) => {
                     // This is a workaround for the issue with number inputs in React Hook Form.
                     onChange(+ev.currentTarget.value)
