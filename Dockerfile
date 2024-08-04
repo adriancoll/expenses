@@ -29,11 +29,11 @@ COPY --link . .
 
 # -------------- I ADDED THIS ---------------------------
 # # Change to frontend directory and build the frontend app
-# WORKDIR /app/frontend
-# RUN bun run build
+WORKDIR /app/frontend
+RUN bun run build
 
 # # Remove all files in frontend except for the dist folder
-# RUN find . -mindepth 1 ! -regex '^./dist\(/.*\)?' -delete
+RUN find . -mindepth 1 ! -regex '^./dist\(/.*\)?' -delete
 # -------------------------------------------------------
 
 # Final stage for app image
